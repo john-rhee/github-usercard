@@ -3,6 +3,22 @@
            https://api.github.com/users/<your name>
 */
 
+const entryPoint = document.querySelector(".card");
+
+axios
+  .get('https://api.github.com/users/john-rhee')
+  .then(response=>{
+    console.log(response); 
+    response.data.forEach(item => {
+      const newEntry = gitHub(item);
+      entryPoint.appendChild(newEntry);
+    });
+  })
+  .catch(error => {
+    console.log("The data was not returned", error);
+  });
+  
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -45,6 +61,48 @@ const followersArray = [];
 </div>
 
 */
+
+function gitHub(data) {
+
+  const newCard = document.createElement('div');
+  const newImg = document.createElement('img');
+  const newCardInfo = document.createElement('div');
+  const newName = document.createElement('h3');
+  const newUser = document.createElement('p');
+  const p1 = document.createElement('p');
+  const p2 = document.createElement('p');
+  const a1 = document.createElement('a');
+  const p3 = document.createElement('p');
+  const p4 = document.createElement('p');
+  const p5 = document.createElement('p');
+
+  newImg.src = 'avatar_url.data';
+  newName.textContent = 'name.data';
+  newUser.textContent = 'login.data';
+  p1.textContent = 'location.data';
+  a1.textContent = 'html_url.data';
+  p3.textContent = 'Followers: {followers.data}';
+  p4.textContent = 'Following: {following.data}';
+  p5.textContent = 'Bio: {bio.data}';
+  
+  newCard.classList.add("card");
+  newCardInfo.classList.add("card-info");
+  newName.classList.add("name");
+  newUser.classList.add("username");
+
+  newCard.appendChild(newImg);
+  newCard.appendChild(newCardInfo);
+  newCardInfo.appendChild(newName);
+  newCardInfo.appendChild(newUser);
+  newCardInfo.appendChild(p1);
+  newCardInfo.appendChild(p2);
+  p2.appendChild(a1);
+  newCardInfo.appendChild(p3);
+  newCardInfo.appendChild(p4);
+  newCardInfo.appendChild(p5);
+
+  return newCard;
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
