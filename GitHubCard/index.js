@@ -3,16 +3,14 @@
            https://api.github.com/users/<your name>
 */
 
-const entryPoint = document.querySelector(".card");
+const entryPoint = document.querySelector(".cards");
 
 axios
-  .get('https://api.github.com/users/john-rhee')
-  .then(response=>{
+.get('https://api.github.com/users/john-rhee')
+.then(response => {
     console.log(response); 
-    response.data.forEach(item => {
-      const newEntry = gitHub(item);
-      entryPoint.appendChild(newEntry);
-    });
+    const newEntry = gitHub(response.data);
+    entryPoint.appendChild(newEntry);
   })
   .catch(error => {
     console.log("The data was not returned", error);
@@ -40,7 +38,26 @@ axios
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell'
+];
+
+i = 0;
+followersArray.forEach((user, i) => {
+  axios
+  .get(`https://api.github.com/users/${followersArray[i]}`)
+  .then(response => {
+    console.log(response); 
+    const newEntry = gitHub(response.data);
+    entryPoint.appendChild(newEntry);
+  })
+    i++;
+});
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -76,14 +93,15 @@ function gitHub(data) {
   const p4 = document.createElement('p');
   const p5 = document.createElement('p');
 
-  newImg.src = 'avatar_url.data';
-  newName.textContent = 'name.data';
-  newUser.textContent = 'login.data';
-  p1.textContent = 'location.data';
-  a1.textContent = 'html_url.data';
-  p3.textContent = 'Followers: {followers.data}';
-  p4.textContent = 'Following: {following.data}';
-  p5.textContent = 'Bio: {bio.data}';
+  newImg.src = data.avatar_url;
+  newName.textContent = data.name;
+  newUser.textContent = data.login;
+  p1.textContent = data.location;
+  a1.href = data.html_url;
+  a1.textContent = data.html_url;
+  p3.textContent = `Followers: ${data.followers}`;
+  p4.textContent = `Following: ${data.following}`;
+  p5.textContent = `Bio: ${data.bio}`;
   
   newCard.classList.add("card");
   newCardInfo.classList.add("card-info");
