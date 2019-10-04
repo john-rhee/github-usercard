@@ -46,8 +46,8 @@ const followersArray = [
   'bigknell'
 ];
 
-i = 0;
-followersArray.forEach((user, i) => {
+let i = 0;
+followersArray.forEach((p, i) => {
   axios
   .get(`https://api.github.com/users/${followersArray[i]}`)
   .then(response => {
