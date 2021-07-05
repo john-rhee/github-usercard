@@ -3,6 +3,20 @@
            https://api.github.com/users/<your name>
 */
 
+const entryPoint = document.querySelector(".cards");
+
+axios
+.get('https://api.github.com/users/john-rhee')
+.then(response => {
+    console.log(response); 
+    const newEntry = gitHub(response.data);
+    entryPoint.appendChild(newEntry);
+  })
+  .catch(error => {
+    console.log("The data was not returned", error);
+  });
+  
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +38,26 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell'
+];
+
+let i = 0;
+followersArray.forEach((p, i) => {
+  axios
+  .get(`https://api.github.com/users/${followersArray[i]}`)
+  .then(response => {
+    console.log(response); 
+    const newEntry = gitHub(response.data);
+    entryPoint.appendChild(newEntry);
+  })
+    i++;
+});
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,6 +78,49 @@ const followersArray = [];
 </div>
 
 */
+
+function gitHub(data) {
+
+  const newCard = document.createElement('div');
+  const newImg = document.createElement('img');
+  const newCardInfo = document.createElement('div');
+  const newName = document.createElement('h3');
+  const newUser = document.createElement('p');
+  const p1 = document.createElement('p');
+  const p2 = document.createElement('p');
+  const a1 = document.createElement('a');
+  const p3 = document.createElement('p');
+  const p4 = document.createElement('p');
+  const p5 = document.createElement('p');
+
+  newImg.src = data.avatar_url;
+  newName.textContent = data.name;
+  newUser.textContent = data.login;
+  p1.textContent = data.location;
+  a1.href = data.html_url;
+  a1.textContent = data.html_url;
+  p3.textContent = `Followers: ${data.followers}`;
+  p4.textContent = `Following: ${data.following}`;
+  p5.textContent = `Bio: ${data.bio}`;
+  
+  newCard.classList.add("card");
+  newCardInfo.classList.add("card-info");
+  newName.classList.add("name");
+  newUser.classList.add("username");
+
+  newCard.appendChild(newImg);
+  newCard.appendChild(newCardInfo);
+  newCardInfo.appendChild(newName);
+  newCardInfo.appendChild(newUser);
+  newCardInfo.appendChild(p1);
+  newCardInfo.appendChild(p2);
+  p2.appendChild(a1);
+  newCardInfo.appendChild(p3);
+  newCardInfo.appendChild(p4);
+  newCardInfo.appendChild(p5);
+
+  return newCard;
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
